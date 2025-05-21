@@ -46,7 +46,8 @@ const HomePage: React.FC = () => {
         <div className="container-fluid d-flex justify-content-between align-items-center px-4">
           <Link className="navbar-brand fw-bold text-primary" to="/">ClassiPlace</Link>
           <div>
-            <Link className="btn btn-outline-primary me-2" to="/login">Entrar</Link>
+            <Link className="btn btn-outline-primary me-2" to="/Login">Login</Link>
+            <Link className="btn btn-outline-primary me-2" to="/Register">Registar</Link>
             <Link className="btn btn-primary" to="/novo-anuncio">+ Anunciar</Link>
           </div>
         </div>
