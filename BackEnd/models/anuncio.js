@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
-  const Mensagem = sequelize.define(
-    "Mensagem",
+  const Anuncio = sequelize.define(
+    "Anuncio",
     {
       id_anuncio: {
         type: DataTypes.INTEGER,
@@ -32,26 +32,12 @@ module.exports = (sequelize, DataTypes) => {
       id_utilizador: {
         type: DataTypes.INTEGER,
         allowNull: false,
-      },
-      id_categoria: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      },
-      id_localizacao: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      },
-      id_utilizador: {
-        //FOREIGN KEY (id_utilizador) REFERENCES utilizador(id_utilizador)
-        type: DataTypes.INTEGER,
-        allowNull: false,
         references: {
           model: "utilizador",
           key: "id_utilizador",
         },
       },
-      id_anuncio: {
-        //FOREIGN KEY (id_categoria) REFERENCES categoria(id_categoria)
+      id_categoria: {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
@@ -59,8 +45,7 @@ module.exports = (sequelize, DataTypes) => {
           key: "id_categoria",
         },
       },
-      id_anuncio: {
-        //FOREIGN KEY (id_localizacao) REFERENCES localizacao(id_localizacao)
+      id_localizacao: {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
@@ -70,9 +55,9 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     {
-      tableName: "mensagem",
+      tableName: "anuncio",
       timestamps: false,
     }
   );
-  return Mensagem;
+  return Anuncio;
 };

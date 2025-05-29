@@ -6,6 +6,9 @@ _npm init -y_
 package-lock.json
 _npm i_
 
+cors
+_npm i cors_
+
 express
 _npm i express_
 

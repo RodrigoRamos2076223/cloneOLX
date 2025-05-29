@@ -1,8 +1,8 @@
 module.exports = (sequelize, DataTypes) => {
-  const HistoricoVisualizacao = sequelize.define(
-    "HistoricoVisualizacao",
+  const PesquisaGuardada = sequelize.define(
+    "PesquisaGuardada",
     {
-      id_visualizacao: {
+      id_pesquisa: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true,
@@ -15,24 +15,32 @@ module.exports = (sequelize, DataTypes) => {
           key: "id_utilizador",
         },
       },
-      id_anuncio: {
-        type: DataTypes.INTEGER,
+      termo_pesquisa: {
+        type: DataTypes.STRING(100),
         allowNull: false,
-        references: {
-          model: "anuncio",
-          key: "id_anuncio",
-        },
       },
-      data_visualizacao: {
+      filtros: {
+        type: DataTypes.JSON,
+        allowNull: true,
+      },
+      data_pesquisa: {
         type: DataTypes.DATE,
         allowNull: false,
         defaultValue: DataTypes.NOW,
+      },
+      id_localizacao: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        references: {
+          model: "localizacao",
+          key: "id_localizacao",
+        },
       }
     },
     {
-      tableName: "historico_visualizacao",
+      tableName: "pesquisa_guardada",
       timestamps: false,
     }
   );
-  return HistoricoVisualizacao;
-};
+  return PesquisaGuardada;
+}; 
