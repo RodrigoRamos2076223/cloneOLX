@@ -1,12 +1,15 @@
-const { Sequelize } = require("sequelize");
-const sequelize = require("../server").sequelize;
-const mensagem = require("../models/mesangem")(sequelize, Sequelize.DataTypes);
+const { Mensagem, Anuncio, User } = require('../db_sequelize');
+const { Op } = require('sequelize');
+const jwt = require("jsonwebtoken");
+const SECRET = process.env.JWT_SECRET || "segredo_super_secreto";
 
 // Enviar mensagem
 async function enviarMensagem(req, res) {
-  const { id_remetente, id_destinatario, id_anuncio, conteudo } = req.body;
+  const { id_destinatario, id_anuncio, conteudo } = req.body;
+  const id_remetente = req.user.id; // Pega o ID do usuário autenticado
+  
   try {
-    const novaMensagem = await mensagem.create({
+    const novaMensagem = await Mensagem.create({
       id_remetente,
       id_destinatario,
       id_anuncio,
@@ -18,19 +21,69 @@ async function enviarMensagem(req, res) {
   }
 }
 
-// Listar mensagens entre dois utilizadores para um anúncio
-async function listarMensagens(req, res) {
-  const { id_remetente, id_destinatario, id_anuncio } = req.query;
+// Listar todas as conversas do usuário
+async function listarConversas(req, res) {
+  const userId = req.user.id;
   try {
-    const mensagens = await mensagem.findAll({
+    const conversas = await Mensagem.findAll({
+      where: {
+        [Op.or]: [
+          { id_remetente: userId },
+          { id_destinatario: userId }
+        ]
+      },
+      include: [
+        {
+          model: Anuncio,
+          attributes: ['titulo']
+        },
+        {
+          model: User,
+          as: 'remetente',
+          attributes: ['nome']
+        },
+        {
+          model: User,
+          as: 'destinatario',
+          attributes: ['nome']
+        }
+      ],
+      order: [['data_envio', 'DESC']],
+      group: ['id_anuncio']
+    });
+    res.status(200).json(conversas);
+  } catch (error) {
+    res.status(500).json({ message: "Erro ao listar conversas", error });
+  }
+}
+
+// Buscar mensagens de uma conversa específica
+async function buscarMensagens(req, res) {
+  const userId = req.user.id;
+  const { id_anuncio } = req.params;
+  
+  try {
+    const mensagens = await Mensagem.findAll({
       where: {
         id_anuncio,
-        [Sequelize.Op.or]: [
-          { id_remetente, id_destinatario },
-          { id_remetente: id_destinatario, id_destinatario: id_remetente },
-        ],
+        [Op.or]: [
+          { id_remetente: userId },
+          { id_destinatario: userId }
+        ]
       },
-      order: [["data_envio", "ASC"]],
+      include: [
+        {
+          model: User,
+          as: 'remetente',
+          attributes: ['nome']
+        },
+        {
+          model: User,
+          as: 'destinatario',
+          attributes: ['nome']
+        }
+      ],
+      order: [['data_envio', 'ASC']]
     });
     res.status(200).json(mensagens);
   } catch (error) {
@@ -40,5 +93,6 @@ async function listarMensagens(req, res) {
 
 module.exports = {
   enviarMensagem,
-  listarMensagens,
+  listarConversas,
+  buscarMensagens
 };

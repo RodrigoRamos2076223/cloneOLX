@@ -1,9 +1,7 @@
-const { Sequelize } = require("sequelize");
-const sequelize = require("../server").sequelize;
-const Administrador = require("../models/administrador")(
-  sequelize,
-  Sequelize.DataTypes
-);
+
+const Administrador = require('../db_sequelize').Administrador;
+const jwt = require("jsonwebtoken");
+const SECRET = process.env.JWT_SECRET || "segredo_super_secreto";
 
 // Listar todos os administradores
 async function listarAdministradores(req, res) {

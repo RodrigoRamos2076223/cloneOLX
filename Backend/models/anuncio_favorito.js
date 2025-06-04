@@ -1,5 +1,3 @@
-const { DataTypes } = require("sequelize")
-
 module.exports = (sequelize, DataTypes) => {
     const AnuncioFavorito = sequelize.define('AnuncioFavorito', {
         id_utilizador: {

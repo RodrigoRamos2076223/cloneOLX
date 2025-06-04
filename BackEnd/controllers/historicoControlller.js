@@ -1,9 +1,4 @@
-const { Sequelize } = require("sequelize");
-const sequelize = require("../server").sequelize;
-const Historico = require("../models/historico_visualizacao")(
-  sequelize,
-  Sequelize.DataTypes
-);
+const HistoricoVisualizacao = require('../db_sequelize').HistoricoVisualizacao;
 
 // Listar todos os históricos
 async function listarHistoricos(req, res) {

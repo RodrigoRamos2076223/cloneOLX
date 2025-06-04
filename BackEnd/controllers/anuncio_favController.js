@@ -1,9 +1,7 @@
-const { Sequelize } = require("sequelize");
-const sequelize = require("../server").sequelize;
-const AnuncioFavorito = require("../models/anuncio_favorito")(
-  sequelize,
-  Sequelize.DataTypes
-);
+
+const AnuncioFavorito = require('../db_sequelize').AnuncioFavorito;
+const jwt = require("jsonwebtoken");
+const SECRET = process.env.JWT_SECRET || "segredo_super_secreto";
 
 // Listar todos os favoritos
 async function listarFavoritos(req, res) {

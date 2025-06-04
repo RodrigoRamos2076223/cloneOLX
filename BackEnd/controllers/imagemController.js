@@ -1,8 +1,8 @@
 const multer = require("multer");
 const path = require("path");
-const { Sequelize } = require("sequelize");
-const sequelize = require("../server").sequelize;
-const Imagem = require("../models/imagem")(sequelize, Sequelize.DataTypes);
+const Imagem = require('../db_sequelize').Imagem;
+const jwt = require("jsonwebtoken");
+const SECRET = process.env.JWT_SECRET || "segredo_super_secreto";
 
 // Configuração do multer para upload de imagens
 const storage = multer.diskStorage({
